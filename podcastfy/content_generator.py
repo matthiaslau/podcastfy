@@ -707,11 +707,12 @@ class LongFormContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
 
 class ContentGenerator:
     def __init__(
-        self, 
-        is_local: bool=False, 
-        model_name: str="gemini-1.5-pro-latest", 
-        api_key_label: str="GEMINI_API_KEY",
-        conversation_config: Optional[Dict[str, Any]] = None
+        self,
+        is_local: bool = False,
+        model_name: str = "gemini-1.5-pro-latest",
+        api_key_label: str = "GEMINI_API_KEY",
+        conversation_config: Optional[Dict[str, Any]] = None,
+        config: Optional[Dict[str, Any]] = None
     ):
         """
         Initialize the ContentGenerator.
@@ -720,8 +721,10 @@ class ContentGenerator:
                 api_key (str): API key for Google's Generative AI.
                 conversation_config (Optional[Dict[str, Any]]): Custom conversation configuration.
         """
-        #os.environ["GOOGLE_API_KEY"] = api_key
-        self.config = load_config()
+        # os.environ["GOOGLE_API_KEY"] = api_key
+        if config is None:
+            config = load_config()
+        self.config = config
         self.content_generator_config = self.config.get("content_generator", {})
 
         self.config_conversation = load_conversation_config(conversation_config)
