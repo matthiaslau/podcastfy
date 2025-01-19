@@ -374,10 +374,11 @@ class ContentGenerationStrategy(ABC):
 
     @abstractmethod
     def compose_prompt_params(self,
-                            config_conversation: Dict[str, Any],
-                            image_file_paths: List[str] = [],
-                            image_path_keys: List[str] = [],
-                            input_texts: str = "") -> Dict[str, Any]:
+                              config_conversation: Dict[str, Any],
+                              image_file_paths: List[str] = [],
+                              image_path_keys: List[str] = [],
+                              input_texts: str = "",
+                              transcript_history: Optional[str] = None) -> Dict[str, Any]:
         """Compose prompt parameters according to strategy."""
         pass
 
@@ -421,10 +422,11 @@ class StandardContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
         return self._clean_tss_markup(response)
 
     def compose_prompt_params(self,
-                            config_conversation: Dict[str, Any],
-                            image_file_paths: List[str] = [],
-                            image_path_keys: List[str] = [],
-                            input_texts: str = "") -> Dict[str, Any]:
+                              config_conversation: Dict[str, Any],
+                              image_file_paths: List[str] = [],
+                              image_path_keys: List[str] = [],
+                              input_texts: str = "",
+                              transcript_history: Optional[str] = None) -> Dict[str, Any]:
         """Compose prompt parameters for standard content generation."""
         prompt_params = {
             "input_text": input_texts,
@@ -442,6 +444,7 @@ class StandardContentStrategy(ContentGenerationStrategy, ContentCleanerMixin):
             "engagement_techniques": ", ".join(
                 config_conversation.get("engagement_techniques", [])
             ),
+            "transcript_history": transcript_history,
         }
 
         # Add image paths to parameters if any
@@ -839,7 +842,8 @@ class ContentGenerator:
         input_texts: str = "",
         image_file_paths: List[str] = [],
         output_filepath: Optional[str] = None,
-        longform: bool = False
+        longform: bool = False,
+        transcript_history: Optional[str] = None
     ) -> str:
         """
         Generate Q&A content based on input texts.
@@ -852,7 +856,7 @@ class ContentGenerator:
             model_name (str): Model name to use for generation.
             api_key_label (str): Environment variable name for API key.
             longform (bool): Whether to generate long-form content. Defaults to False.
-
+            transcript_history (Optional[str]): Transcript so far.
         Returns:
             str: Generated conversation content
 
@@ -873,13 +877,13 @@ class ContentGenerator:
             self.parser = StrOutputParser()
             self.chain = self.prompt_template | self.llm | self.parser
 
-
             # Prepare parameters using strategy
             prompt_params = strategy.compose_prompt_params(
                 self.config_conversation,
                 image_file_paths,
                 image_path_keys,
-                input_texts
+                input_texts,
+                transcript_history
             )
 
             # Generate content using selected strategy

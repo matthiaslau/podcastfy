@@ -52,7 +52,8 @@ def process_content(
     model_name: Optional[str] = None,
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
-    longform: bool = False
+    longform: bool = False,
+    transcript_history: Optional[str] = None,
 ):
     """
     Process URLs, a transcript file, image paths, or raw text to generate a podcast or transcript.
@@ -89,7 +90,7 @@ def process_content(
             )
 
             combined_content = ""
-            
+
             if urls:
                 logger.info(f"Processing {len(urls)} links")
                 contents = [content_extractor.extract_content(link) for link in urls]
@@ -117,7 +118,8 @@ def process_content(
                 combined_content,
                 image_file_paths=image_paths or [],
                 output_filepath=transcript_filepath,
-                longform=longform
+                longform=longform,
+                transcript_history=transcript_history
             )
 
         if generate_audio:
@@ -289,6 +291,7 @@ def generate_podcast(
     api_key_label: Optional[str] = None,
     topic: Optional[str] = None,
     longform: bool = False,
+    transcript_history: Optional[str] = None,
 ) -> Optional[str]:
     """
     Generate a podcast or transcript from a list of URLs, a file containing URLs, a transcript file, or image files.
@@ -307,6 +310,7 @@ def generate_podcast(
         llm_model_name (Optional[str]): LLM model name for content generation.
         api_key_label (Optional[str]): Environment variable name for LLM API key.
         topic (Optional[str]): Topic to generate podcast about.
+        transcript_history (Optional[str]): Transcript so far.
 
     Returns:
         Optional[str]: Path to the final podcast audio file, or None if only generating a transcript.
@@ -355,7 +359,8 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
+                transcript_history=transcript_history
             )
         else:
             urls_list = urls or []
@@ -381,7 +386,8 @@ def generate_podcast(
                 model_name=llm_model_name,
                 api_key_label=api_key_label,
                 topic=topic,
-                longform=longform
+                longform=longform,
+                transcript_history=transcript_history
             )
 
     except Exception as e:
