@@ -103,9 +103,9 @@ class TextToSpeech:
                 model = provider_config.get("model")
                 audio_data_list = self.provider.generate_audio(
                     cleaned_text,
-                    voice="S",
-                    model="en-US-Studio-MultiSpeaker",
-                    voice2="R",
+                    voice=voice,
+                    model=model,
+                    voice2=voice2,
                     ending_message=self.ending_message,
                 )
 
