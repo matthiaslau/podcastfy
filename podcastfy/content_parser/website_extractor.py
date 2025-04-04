@@ -46,8 +46,14 @@ class WebsiteExtractor:
 			normalized_url = self.normalize_url(url)
 
 			# Request the webpage
-			headers = {'User-Agent': self.user_agent}
-			print(f'Requesting {normalized_url} as {self.user_agent}')
+			headers = {
+				'User-Agent': self.user_agent,
+				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+				'Accept-Language': 'en-US,en;q=0.5',
+				'Accept-Encoding': 'gzip, deflate, br',
+				'Connection': 'keep-alive',
+				'Upgrade-Insecure-Requests': '1'
+			}
 			response = requests.get(normalized_url, headers=headers, timeout=self.timeout)
 			response.raise_for_status()  # Raise an exception for bad status codes
 
