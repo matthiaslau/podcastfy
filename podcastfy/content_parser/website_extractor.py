@@ -47,7 +47,7 @@ class WebsiteExtractor:
 
 			# Request the webpage
 			headers = {'User-Agent': self.user_agent}
-			logger.info(f'Requesting {normalized_url} as {self.user_agent}')
+			print(f'Requesting {normalized_url} as {self.user_agent}')
 			response = requests.get(normalized_url, headers=headers, timeout=self.timeout)
 			response.raise_for_status()  # Raise an exception for bad status codes
 
