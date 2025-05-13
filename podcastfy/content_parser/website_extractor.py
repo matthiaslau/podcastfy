@@ -64,6 +64,10 @@ class WebsiteExtractor:
 			print(response.headers['Content-Encoding'])
 			print(response.headers['Content-Type'])
 			print(f'Content start {response.content[:100]}')
+			print("First 200 bytes:")
+			print(response.content[:200])
+			print("\nAs hex:")
+			print(response.content[:100].hex())
 
 			# Remove unwanted elements
 			self.remove_unwanted_elements(soup)
