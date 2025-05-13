@@ -50,7 +50,7 @@ class WebsiteExtractor:
 				'User-Agent': self.user_agent,
 				'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
 				'Accept-Language': 'en-US,en;q=0.5',
-				'Accept-Encoding': 'gzip, deflate, br',
+				# 'Accept-Encoding': 'gzip, deflate, br',
 				'Connection': 'keep-alive',
 				'Upgrade-Insecure-Requests': '1'
 			}
@@ -60,6 +60,8 @@ class WebsiteExtractor:
 			# Parse the page content with BeautifulSoup
 			soup = BeautifulSoup(response.content, 'html.parser')
 			print('Used response content')
+			print(response.headers)
+			print(response.headers['Content-Encoding'])
 			print(response.headers['Content-Type'])
 			print(f'Content start {response.content[:100]}')
 
