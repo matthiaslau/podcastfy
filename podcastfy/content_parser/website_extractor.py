@@ -59,6 +59,9 @@ class WebsiteExtractor:
 
 			# Parse the page content with BeautifulSoup
 			soup = BeautifulSoup(response.content, 'html.parser')
+			print('Used response content')
+			print(response.headers['Content-Type'])
+			print(f'Content start {response.content[:100]}')
 
 			# Remove unwanted elements
 			self.remove_unwanted_elements(soup)
