@@ -109,6 +109,8 @@ def process_content(
                 topic_content = content_extractor.generate_topic_content(topic)
                 combined_content += f"\n\n{topic_content}"
 
+            print(f'Crawled Content is {combined_content}')
+
             # Generate Q&A content using output directory from conversation config
             random_filename = f"transcript_{uuid.uuid4().hex}.txt"
             transcript_filepath = os.path.join(
