@@ -58,7 +58,7 @@ class WebsiteExtractor:
 			response.raise_for_status()  # Raise an exception for bad status codes
 
 			# Parse the page content with BeautifulSoup
-			soup = BeautifulSoup(response.text, 'html.parser')
+			soup = BeautifulSoup(response.content, 'html.parser')
 
 			# Remove unwanted elements
 			self.remove_unwanted_elements(soup)
